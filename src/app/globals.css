@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   Sistema de diseño — "Rachas."
+   Marca verde, fondo claro, tipografía bold. Look limpio y profesional.
+   ========================================================================== */
+:root {
+  --background: #f4f7f5; /* fondo de la app (verde-gris muy claro) */
+  --surface: #ffffff; /* tarjetas / superficies */
+  --surface-2: #f0f3f1; /* superficies sutiles (chips) */
+  --foreground: #0d1b16; /* texto principal (casi negro verdoso) */
+  --muted: #46554e; /* texto secundario (contraste AA sobre fondo claro) */
+  --border: #dde3e0; /* bordes de tarjetas */
+  --border-strong: #b9c4bd; /* bordes de elementos interactivos (inputs, días) */
+
+  --brand: #16c172; /* verde de marca */
+  --brand-hover: #12a862; /* hover del verde */
+  --brand-weak: #e4f7ee; /* verde muy claro (badges, estados) */
+  --brand-strong: #0c8a50; /* verde oscuro (acentos/contraste) */
+  --brand-fg: #ffffff; /* texto sobre verde */
+
+  --ink: #0d1b16; /* botón oscuro (nav) */
+  --danger: #e5484d;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-weak: var(--brand-weak);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-fg: var(--brand-fg);
+  --color-ink: var(--ink);
+  --color-danger: var(--danger);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Utilidades de componente reutilizables */
+@layer components {
+  .btn-brand {
+    @apply inline-flex items-center justify-center rounded-full bg-brand px-5 py-2.5 font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:opacity-50;
+  }
+  .btn-ink {
+    @apply inline-flex items-center justify-center rounded-full bg-ink px-5 py-2.5 font-semibold text-white transition-opacity hover:opacity-90;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 font-semibold text-foreground transition-colors hover:bg-surface-2;
+  }
+  .card {
+    @apply rounded-2xl border border-border bg-surface;
+  }
+}
