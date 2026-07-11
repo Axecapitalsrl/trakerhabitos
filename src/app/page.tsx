@@ -63,9 +63,6 @@ export default async function Home() {
               Cómo funciona
             </a>
           </div>
-          <p className="mt-3 text-sm text-muted">
-            Empezás gratis · sin tarjeta de crédito
-          </p>
         </div>
 
         {/* Mockup del producto */}
