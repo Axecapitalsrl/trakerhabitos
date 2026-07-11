@@ -70,7 +70,7 @@
   }
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
