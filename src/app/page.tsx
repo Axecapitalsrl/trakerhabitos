@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import { Logo } from "@/components/Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default async function Home() {
   const { userId } = await auth();
@@ -25,6 +26,7 @@ export default async function Home() {
             </a>
           </div>
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             {!userId && (
               <Link
                 href="/sign-in"
