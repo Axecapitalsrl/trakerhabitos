@@ -44,13 +44,13 @@ export function LogoMark({ className = "h-9 w-9" }: { className?: string }) {
 
 export function Logo({ href = "/" }: { href?: string }) {
   return (
-    <Link href={href} className="flex items-center gap-2.5">
-      <LogoMark className="h-8 w-8" />
+    <Link href={href} className="flex items-center gap-2 sm:gap-2.5">
+      <LogoMark className="h-7 w-7 sm:h-8 sm:w-8" />
       <span className="leading-none">
-        <span className="block whitespace-nowrap text-[15px] font-extrabold tracking-tight">
+        <span className="block whitespace-nowrap text-[13px] font-extrabold tracking-tight sm:text-[15px]">
           Hábitos Tracker<span className="text-brand">.</span>
         </span>
-        <span className="mt-0.5 block text-[10px] font-semibold uppercase tracking-wide text-muted">
+        <span className="mt-0.5 block text-[9px] font-semibold uppercase tracking-wide text-muted sm:text-[10px]">
           por Rachas
         </span>
       </span>

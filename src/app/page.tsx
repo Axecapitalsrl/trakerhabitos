@@ -12,7 +12,7 @@ export default async function Home() {
     <div className="flex flex-1 flex-col">
       {/* ---------- Nav ---------- */}
       <header className="sticky top-0 z-20 border-b border-border/70 bg-background/80 backdrop-blur">
-        <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5">
+        <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-5">
           <Logo />
           <div className="hidden items-center gap-8 text-sm font-medium text-muted md:flex">
             <a href="#como-funciona" className="hover:text-foreground">
@@ -25,7 +25,7 @@ export default async function Home() {
               FAQ
             </a>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <ThemeToggle />
             {!userId && (
               <Link
@@ -35,7 +35,10 @@ export default async function Home() {
                 Iniciar sesión
               </Link>
             )}
-            <Link href={primaryHref} className="btn-ink text-sm">
+            <Link
+              href={primaryHref}
+              className="btn-ink whitespace-nowrap px-4 text-sm sm:px-5"
+            >
               {primaryLabel}
             </Link>
           </div>
