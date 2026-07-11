@@ -114,29 +114,25 @@ export default async function Home() {
 
       {/* ---------- Precio ---------- */}
       <section id="precio" className="py-20">
-        <div className="mx-auto w-full max-w-lg px-5 text-center">
-          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Precio simple
+        <div className="mx-auto w-full max-w-6xl px-5">
+          <h2 className="text-center text-3xl font-extrabold tracking-tight sm:text-4xl">
+            Elegí tu plan
           </h2>
-          <div className="card mt-8 p-8">
-            <p className="text-sm font-semibold uppercase tracking-wide text-brand-strong">
-              Beta
-            </p>
-            <p className="mt-3 text-5xl font-extrabold tracking-tight">
-              Gratis
-            </p>
-            <p className="mt-2 text-muted">
-              Acceso por aprovación mientras estamos en beta.
-            </p>
-            <ul className="mx-auto mt-6 max-w-xs space-y-2 text-left text-sm">
-              <Feature>Hábitos ilimitados</Feature>
-              <Feature>Rachas y progreso semanal</Feature>
-              <Feature>Hábitos sugeridos para arrancar</Feature>
-            </ul>
-            <Link href={primaryHref} className="btn-brand mt-8 w-full py-3.5">
-              {primaryLabel}
-            </Link>
+          <p className="mx-auto mt-3 max-w-xl text-center text-muted">
+            Empezás gratis en la beta. Cuando habilitemos la facturación, elegís
+            el plan que va con vos.
+          </p>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-3 md:items-stretch">
+            {PLANS.map((plan) => (
+              <PlanCard key={plan.name} plan={plan} href={primaryHref} />
+            ))}
           </div>
+
+          <p className="mt-6 text-center text-sm text-muted">
+            El plan personalizado con IA usa Claude Sonnet 5 · el asistente 24/7,
+            Claude Haiku 4.5.
+          </p>
         </div>
       </section>
 
@@ -225,6 +221,108 @@ function Feature({ children }: { children: React.ReactNode }) {
       <span className="mt-0.5 text-brand">✓</span>
       <span>{children}</span>
     </li>
+  );
+}
+
+type Plan = {
+  name: string;
+  price: string;
+  tagline: string;
+  badge?: string;
+  highlighted?: boolean;
+  cta: string;
+  features: string[];
+};
+
+const PLANS: Plan[] = [
+  {
+    name: "Starter",
+    price: "7",
+    tagline: "Para empezar a construir tus hábitos.",
+    cta: "Empezar",
+    features: [
+      "Hasta 5 hábitos",
+      "Marcado diario y rachas",
+      "Progreso semanal",
+      "Hábitos sugeridos para arrancar",
+    ],
+  },
+  {
+    name: "Pro",
+    price: "17",
+    tagline: "Para quien va en serio.",
+    badge: "Más popular",
+    cta: "Elegir Pro",
+    features: [
+      "Todo lo de Starter",
+      "Hábitos ilimitados",
+      "Plan personalizado con IA (hasta 4 por mes)",
+      "Estadísticas avanzadas",
+      "Recordatorios",
+    ],
+  },
+  {
+    name: "Premium",
+    price: "27",
+    tagline: "Todo, sin límites.",
+    badge: "Completo",
+    highlighted: true,
+    cta: "Elegir Premium",
+    features: [
+      "Todo lo de Pro",
+      "Plan personalizado con IA ilimitado",
+      "Asistente personal de hábitos con IA 24/7",
+      "Exportá tus datos",
+      "Soporte prioritario",
+    ],
+  },
+];
+
+function PlanCard({ plan, href }: { plan: Plan; href: string }) {
+  return (
+    <div
+      className={[
+        "card flex flex-col p-6",
+        plan.highlighted ? "border-brand ring-2 ring-brand/30" : "",
+      ].join(" ")}
+    >
+      <div className="flex items-center justify-between gap-2">
+        <h3 className="text-lg font-bold">{plan.name}</h3>
+        {plan.badge && (
+          <span
+            className={[
+              "rounded-full px-2.5 py-0.5 text-xs font-bold",
+              plan.highlighted
+                ? "bg-brand text-brand-fg"
+                : "bg-brand-weak text-brand-strong",
+            ].join(" ")}
+          >
+            {plan.badge}
+          </span>
+        )}
+      </div>
+      <p className="mt-1 text-sm text-muted">{plan.tagline}</p>
+      <p className="mt-5">
+        <span className="text-4xl font-extrabold tracking-tight">
+          ${plan.price}
+        </span>
+        <span className="text-muted"> /mes</span>
+      </p>
+      <ul className="mt-6 flex-1 space-y-2.5 text-sm">
+        {plan.features.map((f) => (
+          <Feature key={f}>{f}</Feature>
+        ))}
+      </ul>
+      <Link
+        href={href}
+        className={[
+          plan.highlighted ? "btn-brand" : "btn-ink",
+          "mt-8 w-full py-3",
+        ].join(" ")}
+      >
+        {plan.cta}
+      </Link>
+    </div>
   );
 }
 
