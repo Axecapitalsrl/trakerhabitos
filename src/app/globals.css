@@ -21,6 +21,53 @@
 
   --ink: #0d1b16; /* botón oscuro (nav) */
   --danger: #e5484d;
+
+  color-scheme: light;
+}
+
+/* --- Tema oscuro (manual: data-theme="dark"; o "system" + preferencia OS) --- */
+:root[data-theme="dark"] {
+  --background: #0e1613;
+  --surface: #16221c;
+  --surface-2: #1e2c25;
+  --foreground: #e9f1ec;
+  --muted: #9fb2a9;
+  --border: #26352d;
+  --border-strong: #38493f;
+
+  --brand: #1ecb7b;
+  --brand-hover: #17b56d;
+  --brand-weak: #16301f;
+  --brand-strong: #5cdfa0;
+  --brand-fg: #05170e;
+
+  --ink: #22332b;
+  --danger: #f76d6d;
+
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="system"] {
+    --background: #0e1613;
+    --surface: #16221c;
+    --surface-2: #1e2c25;
+    --foreground: #e9f1ec;
+    --muted: #9fb2a9;
+    --border: #26352d;
+    --border-strong: #38493f;
+
+    --brand: #1ecb7b;
+    --brand-hover: #17b56d;
+    --brand-weak: #16301f;
+    --brand-strong: #5cdfa0;
+    --brand-fg: #05170e;
+
+    --ink: #22332b;
+    --danger: #f76d6d;
+
+    color-scheme: dark;
+  }
 }
 
 @theme inline {

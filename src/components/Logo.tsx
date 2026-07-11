@@ -46,8 +46,13 @@ export function Logo({ href = "/" }: { href?: string }) {
   return (
     <Link href={href} className="flex items-center gap-2.5">
       <LogoMark className="h-8 w-8" />
-      <span className="text-xl font-extrabold tracking-tight">
-        Rachas<span className="text-brand">.</span>
+      <span className="leading-none">
+        <span className="block whitespace-nowrap text-[15px] font-extrabold tracking-tight">
+          Hábitos Tracker<span className="text-brand">.</span>
+        </span>
+        <span className="mt-0.5 block text-[10px] font-semibold uppercase tracking-wide text-muted">
+          por Rachas
+        </span>
       </span>
     </Link>
   );

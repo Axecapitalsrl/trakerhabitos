@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
 import { Geist, Geist_Mono } from "next/font/google";
+import { PWARegister } from "@/components/PWARegister";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,10 +16,26 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Rachas. — Construí hábitos que se mantienen",
+  title: "Hábitos Tracker — Construí hábitos que se mantienen",
   description:
     "Una app simple y sin fricción para trackear tu día a día y ver tu progreso real.",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: "Hábitos Tracker",
+    statusBarStyle: "default",
+  },
 };
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f4f7f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e1613" },
+  ],
+};
+
+// Evita el parpadeo de tema: aplica data-theme antes de pintar.
+const themeScript = `(function(){try{var t=localStorage.getItem('theme')||'system';document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme='system';}})();`;
 
 export default function RootLayout({
   children,
@@ -38,9 +55,14 @@ export default function RootLayout({
     >
       <html
         lang="es"
+        data-theme="system"
         className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       >
-        <body className="flex min-h-full flex-col">{children}</body>
+        <body className="flex min-h-full flex-col">
+          <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+          {children}
+          <PWARegister />
+        </body>
       </html>
     </ClerkProvider>
   );

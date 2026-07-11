@@ -6,42 +6,31 @@ import type { Habit } from "@/lib/types";
 
 /**
  * Siembra los hábitos predeterminados la primera vez que el usuario entra.
- * Idempotente vía el flag profiles.defaults_seeded, y además deduplica por
- * nombre para no pisar hábitos que el usuario ya tenga.
+ *
+ * Usa un "reclamo atómico" del flag defaults_seeded (false -> true) para evitar
+ * la race condition: si varias requests concurrentes (ej. prefetch de Next)
+ * entran a la vez, SOLO una gana el update condicional y siembra; las demás
+ * ven 0 filas actualizadas y se van. Así nunca se duplican los defaults.
  */
 export async function ensureDefaultHabits(userId: string): Promise<void> {
   const supabase = createAdminClient();
 
-  const { data: profile } = await supabase
+  const { data: claimed } = await supabase
     .from("profiles")
-    .select("defaults_seeded")
+    .update({ defaults_seeded: true })
     .eq("id", userId)
-    .maybeSingle<{ defaults_seeded: boolean }>();
+    .eq("defaults_seeded", false)
+    .select("id");
 
-  if (!profile || profile.defaults_seeded) return;
+  // Ya estaba sembrado (o lo está reclamando otra request en este instante).
+  if (!claimed || claimed.length === 0) return;
 
-  const { data: existing } = await supabase
-    .from("habits")
-    .select("name")
-    .eq("user_id", userId)
-    .returns<{ name: string }[]>();
-
-  const taken = new Set((existing ?? []).map((h) => h.name.toLowerCase()));
-  const toInsert = DEFAULT_HABITS.filter(
-    (h) => !taken.has(h.name.toLowerCase()),
-  ).map((h) => ({
+  const toInsert = DEFAULT_HABITS.map((h) => ({
     user_id: userId,
     name: h.name,
     description: h.description ?? null,
   }));
-
-  if (toInsert.length > 0) {
-    await supabase.from("habits").insert(toInsert);
-  }
-  await supabase
-    .from("profiles")
-    .update({ defaults_seeded: true })
-    .eq("id", userId);
+  await supabase.from("habits").insert(toInsert);
 }
 
 export interface HabitView {
