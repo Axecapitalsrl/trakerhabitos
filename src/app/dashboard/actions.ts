@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { todayStr } from "@/lib/dates";
+import { planConfig, type Plan } from "@/lib/plans";
 
 export interface ActionState {
   error?: string;
@@ -44,6 +45,28 @@ export async function createHabit(
   if (name.length > 80) return { error: "El nombre es demasiado largo." };
 
   const supabase = createAdminClient();
+
+  // Tope de hábitos según el plan.
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("plan")
+    .eq("id", userId)
+    .maybeSingle<{ plan: Plan }>();
+  const limit = planConfig(profile?.plan ?? "free").habitLimit;
+
+  if (limit !== null) {
+    const { count } = await supabase
+      .from("habits")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .eq("archived", false);
+    if ((count ?? 0) >= limit) {
+      return {
+        error: `Tu plan permite hasta ${limit} hábitos. Mejorá tu plan para agregar más.`,
+      };
+    }
+  }
+
   const { error } = await supabase.from("habits").insert({
     user_id: userId,
     name,

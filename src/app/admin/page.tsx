@@ -2,6 +2,7 @@ import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import { listProfiles } from "@/lib/admin";
 import { AdminUserActions } from "@/components/AdminUserActions";
+import { AdminPlanSelect } from "@/components/AdminPlanSelect";
 import type { UserStatus } from "@/lib/types";
 
 const STATUS_LABEL: Record<UserStatus, string> = {
@@ -131,7 +132,8 @@ export default async function AdminPage({
                     Registrado {fmtDate(p.created_at)}
                   </p>
                 </div>
-                <div className="shrink-0">
+                <div className="flex shrink-0 items-center gap-2">
+                  <AdminPlanSelect userId={p.id} plan={p.plan} />
                   <AdminUserActions
                     userId={p.id}
                     status={p.status}

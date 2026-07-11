@@ -10,6 +10,10 @@ export interface Profile {
   status: UserStatus;
   organization_id: string | null;
   defaults_seeded: boolean;
+  plan: import("@/lib/plans").Plan;
+  stripe_customer_id: string | null;
+  ai_plans_used: number;
+  ai_plans_period: string | null;
   created_at: string;
   approved_at: string | null;
   approved_by: string | null;
